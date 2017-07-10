@@ -16,10 +16,10 @@ body {
   clear:both;
   overflow: hidden;
       background: #1C1C1C;
-   /* background: -webkit-linear-gradient(#000, #1C1C1C);
+   background: -webkit-linear-gradient(#000, #1C1C1C);
     background: -o-linear-gradient(#000, #1C1C1C);
     background: -moz-linear-gradient(#000, #1C1C1C); 
-    background: linear-gradient(#000, #1C1C1C); */
+    background: linear-gradient(#000, #1C1C1C); 
 }
 
 .app{
