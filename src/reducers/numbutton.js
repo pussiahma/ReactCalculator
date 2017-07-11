@@ -116,7 +116,7 @@ export default function NumButtonReducer(state = initialState, action) {
             numberArr: state.numberArr,
             mathButtonArr: state.mathButtonArr,
           }
-        }
+        } 
 
           return {
             state,
@@ -124,7 +124,7 @@ export default function NumButtonReducer(state = initialState, action) {
             numberArr: state.numberArr,
             mathButtonArr: state.mathButtonArr,
           }
-      }
+    }
 
     default: 
     return state;
