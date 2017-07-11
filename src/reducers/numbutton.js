@@ -36,11 +36,12 @@ export default function NumButtonReducer(state = initialState, action) {
 
     case NumButtonActionTypes.GET_MATH_BUTTON: {
 
-      const last =state.number.substr(state.number.length - 1);
-      const end = state.number.substr(state.number.length-3);
+      const last = state.number.substr(state.number.length - 1);
+      const end = state.number.substr(state.number.length - 3);
 
       if (action.text === "." || action.text === " -") {
         if (last === "." || last === "-") {
+      
           return {
             state,
             number: state.number,
@@ -49,7 +50,6 @@ export default function NumButtonReducer(state = initialState, action) {
           }
         }
     
-      
         return {
           state,
           number: state.number + action.text,
@@ -59,6 +59,7 @@ export default function NumButtonReducer(state = initialState, action) {
       }
 
       if (last === "." || last === "-" || end === " / " || end === " * " || end === " + ") {
+      
         return {
           state,
           number: state.number,
@@ -69,7 +70,7 @@ export default function NumButtonReducer(state = initialState, action) {
 
       return {
         state,
-        number: state.number == "" ? "" : state.number + action.text,
+        number: state.number === "" ? "" : state.number + action.text,
         numberArr: state.numberArr,
         mathButtonArr: state.mathButtonArr,
       }
@@ -77,55 +78,53 @@ export default function NumButtonReducer(state = initialState, action) {
 
     case NumButtonActionTypes.GET_RESULT: {
 
-      const lastChar =state.number.substr(action.value.length - 1);
-      const endChar = state.number.substr(action.value.length-3);
-      const lastZeros = eval(action.value).toFixed(4).toString().substr(eval(action.value).toFixed(4).toString().length -2);
+      const lastChar = action.value.substr(action.value.length - 1);
+      const endChar = action.value.substr(action.value.length - 3);
+      
+        if (endChar === " + " || endChar === " / " || endChar === " * ") {
+          return {
+            state,
+            number: eval(action.value.substring(0, action.value.length - 3)).toString(),
+            numberArr: state.numberArr,
+            mathButtonArr: state.mathButtonArr
+          }
+        }
 
-      if (endChar == " + " || endChar == " / " || endChar == " * ") {
-        return {
-          state,
-          number: eval(state.number.substring(0, action.value.length - 3)).toString(),
-          numberArr: state.numberArr,
-          mathButtonArr: state.mathButtonArr
+        if (lastChar === "." || lastChar === "-") {
+         
+          return {
+            state,
+            number: eval(action.value.substring(0, action.value.length - 1)).toString(),
+            numberArr: state.numberArr,
+            mathButtonArr: state.mathButtonArr,
+          }
         }
-      }
 
-      if (lastChar == "." || lastChar == "-") {
-        return {
-          state,
-          number: eval(state.number.substring(0, action.value.length - 1)).toString(),
-          numberArr: state.numberArr,
-          mathButtonArr: state.mathButtonArr,
+        if (eval(action.value) % 1 === 0) {
+          return {
+            state,
+            number: eval(action.value).toString(),
+            numberArr: state.numberArr,
+            mathButtonArr: state.mathButtonArr,
+          }
         }
-      }
 
-      if (eval(action.value) % 1 === 0) {
-        return {
-          state,
-          number: eval(action.value).toString(),
-          numberArr: state.numberArr,
-          mathButtonArr: state.mathButtonArr,
+        if (eval(action.value).toString().indexOf(".") > -1 && eval(action.value).toFixed(4).toString().substr(eval(action.value).toFixed(4).toString().length -2) === "00" ) {
+          return {
+            state,
+            number: eval(action.value).toFixed(2).toString(),
+            numberArr: state.numberArr,
+            mathButtonArr: state.mathButtonArr,
+          }
         }
-      }
 
-      if (eval(action.value).toString().indexOf(".") > -1 && lastZeros === "00" ) {
-        return {
-          state,
-          number: eval(action.value).toFixed(2).toString(),
-          numberArr: state.numberArr,
-          mathButtonArr: state.mathButtonArr,
-        }
-        
-      } else {
-        console.log(eval(action.value).toString().indexOf("."));
-        return {
-          state,
-          number: eval(action.value).toFixed(4).toString(),
-          numberArr: state.numberArr,
-          mathButtonArr: state.mathButtonArr,
-        }
+          return {
+            state,
+            number: eval(action.value).toFixed(4).toString(),
+            numberArr: state.numberArr,
+            mathButtonArr: state.mathButtonArr,
+          }
       }
-    }
 
     default: 
     return state;

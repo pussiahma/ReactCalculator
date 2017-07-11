@@ -11,6 +11,13 @@ import MathButtons from '../components/MathButtons';
 class Calculator extends React.Component {
 
 
+static propTypes: {
+  number: PropTypes.string.isRequired,
+  numberArr: PropTypes.array.isRequired,
+  mathButtonArr: PropTypes.array.isRequired,
+
+};
+
   render() {
     const { dispatch, number, numberArr, mathButtonArr } = this.props;
     const getNumber = bindActionCreators(ButtonActionCreators.getNumber, dispatch);
