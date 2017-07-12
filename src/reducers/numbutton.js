@@ -10,13 +10,14 @@ export default function NumButtonReducer(state = initialState, action) {
 
   switch (action.type) {
     case NumButtonActionTypes.GET_NUMBER:
-      if (action.text === "0" && state.number =="") {
-        return {
+
+      if (state.number === " -0" || state.number === ".0" || state.number === "0") {
+         return {
           state,
-          number: "",
+          number: action.text === "." ? state.number + action.text : state.number,
           numberArr: state.numberArr,
           mathButtonArr: state.mathButtonArr,
-        }
+         }
       }
 
       return {
@@ -109,7 +110,7 @@ export default function NumButtonReducer(state = initialState, action) {
           }
         }
 
-        if (eval(action.value).toString().indexOf(".") > -1 && eval(action.value).toFixed(4).toString().substr(eval(action.value).toFixed(4).toString().length -2) === "00" ) {
+        if (eval(action.value).toString().includes(".") && eval(action.value).toFixed(4).toString().endsWith("00")) {
           return {
             state,
             number: eval(action.value).toFixed(2).toString(),
