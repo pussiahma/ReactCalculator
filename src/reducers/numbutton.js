@@ -21,10 +21,10 @@ export default function NumButtonReducer(state = initialState, action) {
       }
 
       return {
-          state,
-          number: state.number == "" ? action.text : state.number + action.text,
-          numberArr: state.numberArr,
-          mathButtonArr: state.mathButtonArr,
+        state,
+        number: state.number == "" ? action.text : state.number + action.text,
+        numberArr: state.numberArr,
+        mathButtonArr: state.mathButtonArr,
       }
 
     case NumButtonActionTypes.CLEAR:

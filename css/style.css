@@ -33,7 +33,6 @@ body {
   width: 100%;
   text-align: center;
   clear:both;
-
   color: #333;
   font-size: 2em;
 
@@ -48,12 +47,12 @@ body {
 
 input {
   height: 70px;
-  max-width: 60%;
+  width: 300px;
   background: #C9E2AE;
    border: 4px solid #B2CA98;
   color: #000;
   border-radius: 10px;
-  font-size: 1.3em;
+  font-size: 1.1em;
   padding: 0;
 }
 
@@ -63,7 +62,6 @@ input {
 }
 
 .numButton{
-
   text-align: center;
   margin: 0;
  padding: 0 !Important;
@@ -81,20 +79,15 @@ input {
   font-size: 36px;
   background: #96bddf;
    border: none;
-
-  
 }
 
 button {
   border-radius: 10px;
   box-shadow: 0px 5px 1px #000;
-
-
 }
 
 button:hover {
   opacity: 0.7;
-  
 }
 
 button:focus {
@@ -105,38 +98,29 @@ button:active {
   transform: translateY(4px);
 }
 
-
 .number {
-  color: black;
-  
+  color: black; 
 }
 
 .numberField {
   margin: 0 auto;
   float:left;
   width: 60%;
- 
- 
 }
 
  .numberField .row {
   padding-left: 30px;
-   padding-top: 30px;
-    margin: 0;
+  padding-top: 30px;
+  margin: 0;
 }
 
 .mathButtons {
   padding: 0;
   margin: 0 auto;
-
   width: 100%;
   float: right;
   width: 40%;
-
-
 }
-  
-
 
 .mathButtons .row {
   margin: 0;

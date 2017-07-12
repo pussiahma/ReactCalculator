@@ -5,7 +5,7 @@ function Header(props){
   return (
     <div className="header">
       <div className="inputField">
-      	<input type="text" value={props.number} readOnly></input>
+      	<input id ="field" type="text" value={props.number} readOnly></input>
       	<button id="clear" onClick={ () => props.clearField() }>C</button>
       </div>
     </div>
