@@ -35,7 +35,7 @@ export default function NumButtonReducer(state = initialState, action) {
 
       function contains(string, arr){
         let value = 0;
-        arr.forEach(function(char){
+        arr.forEach(function(){
         value = value + string.includes(char);
         });
 
@@ -136,6 +136,14 @@ export default function NumButtonReducer(state = initialState, action) {
             mathButtonArr: state.mathButtonArr,
           }
     }
+
+    case NumButtonActionTypes.CLEAR:
+      return {
+        state,
+        number: '',
+        numberArr: state.numberArr,
+        mathButtonArr: state.mathButtonArr,
+      }
 
     default: 
     return state;

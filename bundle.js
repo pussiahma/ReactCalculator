@@ -25003,10 +25003,11 @@ function NumButtonReducer() {
 
   switch (action.type) {
     case NumButtonActionTypes.GET_NUMBER:
-      if (action.text === "0" && state.number == "") {
+
+      if (state.number === '-0' || state.number === '.0' || state.number === '0' || state.number.endsWith('-0') || state.number.endsWith('/ 0') || state.number.endsWith('+ 0') || state.number.endsWith('* 0')) {
         return {
           state: state,
-          number: "",
+          number: state.number,
           numberArr: state.numberArr,
           mathButtonArr: state.mathButtonArr
         };
@@ -25014,28 +25015,36 @@ function NumButtonReducer() {
 
       return {
         state: state,
-        number: state.number == "" ? action.text : state.number + action.text,
-        numberArr: state.numberArr,
-        mathButtonArr: state.mathButtonArr
-      };
-
-    case NumButtonActionTypes.CLEAR:
-      return {
-        state: state,
-        number: "",
+        number: state.number == '' ? action.text : state.number + action.text,
         numberArr: state.numberArr,
         mathButtonArr: state.mathButtonArr
       };
 
     case NumButtonActionTypes.GET_MATH_BUTTON:
       {
+        var contains = function contains(string, arr) {
+          var value = 0;
+          arr.forEach(function () {
+            value = value + string.includes(char);
+          });
+
+          return value === 1;
+        };
 
         var last = state.number.substr(state.number.length - 1);
         var end = state.number.substr(state.number.length - 3);
 
-        if (action.text === "." || action.text === " -") {
-          if (last === "." || last === "-") {
+        if (action.text === "." && contains(state.number, state.mathButtonArr) && state.number.includes(".")) {
+          return {
+            state: state,
+            number: state.number,
+            numberArr: state.numberArr,
+            mathButtonArr: state.mathButtonArr
+          };
+        }
 
+        if (action.text === '.' || action.text === ' -') {
+          if (last === '.' || last === '-') {
             return {
               state: state,
               number: state.number,
@@ -25053,7 +25062,6 @@ function NumButtonReducer() {
         }
 
         if (last === "." || last === "-" || end === " / " || end === " * " || end === " + ") {
-
           return {
             state: state,
             number: state.number,
@@ -25104,7 +25112,7 @@ function NumButtonReducer() {
           };
         }
 
-        if (eval(action.value).toString().indexOf(".") > -1 && eval(action.value).toFixed(4).toString().substr(eval(action.value).toFixed(4).toString().length - 2) === "00") {
+        if (eval(action.value).toString().includes(".") && eval(action.value).toFixed(4).toString().endsWith("00")) {
           return {
             state: state,
             number: eval(action.value).toFixed(2).toString(),
@@ -25120,6 +25128,14 @@ function NumButtonReducer() {
           mathButtonArr: state.mathButtonArr
         };
       }
+
+    case NumButtonActionTypes.CLEAR:
+      return {
+        state: state,
+        number: '',
+        numberArr: state.numberArr,
+        mathButtonArr: state.mathButtonArr
+      };
 
     default:
       return state;
@@ -25384,7 +25400,7 @@ function Header(props) {
     _react2.default.createElement(
       'div',
       { className: 'inputField' },
-      _react2.default.createElement('input', { type: 'text', value: props.number, readOnly: true }),
+      _react2.default.createElement('input', { id: 'field', type: 'text', value: props.number, readOnly: true }),
       _react2.default.createElement(
         'button',
         { id: 'clear', onClick: function onClick() {
@@ -25485,7 +25501,7 @@ exports = module.exports = __webpack_require__(234)(undefined);
 
 
 // module
-exports.push([module.i, "body {\n  font-family: Impact, Charcoal, sans-serif;\n  background: #690C0C;\n}\n\n\n#container {\n  border-radius: 10px;\n  box-shadow: 3px 3px 5px;\n  margin: 10% auto;\n  padding: 10px;\n  max-width: 500px;\n height: 450px;\n  color: black;\n  padding-bottom: 50px;\n  clear:both;\n  overflow: hidden;\n      background: #1C1C1C;\n   background: -webkit-linear-gradient(#000, #1C1C1C);\n    background: -o-linear-gradient(#000, #1C1C1C);\n    background: -moz-linear-gradient(#000, #1C1C1C); \n    background: linear-gradient(#000, #1C1C1C); \n}\n\n.app{\n  clear:both;\n  max-width: 100%;\n  max-height: 100%;\n  \n}\n\n.header {\n  width: 100%;\n  text-align: center;\n  clear:both;\n\n  color: #333;\n  font-size: 2em;\n\n}\n\n.header h1 {\n  padding: 20px;\n color: #2bd3ee;\n\n\n}\n\ninput {\n  height: 70px;\n  max-width: 60%;\n  background: #C9E2AE;\n   border: 4px solid #B2CA98;\n  color: #000;\n  border-radius: 10px;\n  font-size: 1.3em;\n  padding: 0;\n}\n\n.inputField {\n  margin: 0 auto;\n  padding: 10px;\n}\n\n.numButton{\n\n  text-align: center;\n  margin: 0;\n padding: 0 !Important;\n \n}\n\n.numButton row {\n  margin: 0;\n}\n.numButton button {\n  width: 70px;\n  height: 50px;\n  padding: 0;\n  margin: 6px;\n  font-size: 36px;\n  background: #96bddf;\n   border: none;\n\n  \n}\n\nbutton {\n  border-radius: 10px;\n  box-shadow: 0px 5px 1px #000;\n\n\n}\n\nbutton:hover {\n  opacity: 0.7;\n  \n}\n\nbutton:focus {\n  outline:0;\n}\n\nbutton:active {\n  transform: translateY(4px);\n}\n\n\n.number {\n  color: black;\n  \n}\n\n.numberField {\n  margin: 0 auto;\n  float:left;\n  width: 60%;\n \n \n}\n\n .numberField .row {\n  padding-left: 30px;\n   padding-top: 30px;\n    margin: 0;\n}\n\n.mathButtons {\n  padding: 0;\n  margin: 0 auto;\n\n  width: 100%;\n  float: right;\n  width: 40%;\n\n\n}\n  \n\n\n.mathButtons .row {\n  margin: 0;\n  padding-top: 33px;\n  padding-left: 15px;\n  padding-bottom: 30px;\n}\n\n.mathButtons button {\n\n  font-size: 30px;\n  margin: 0 auto;\n  width:60px;\n height: 50px;\n  padding: 0;\n \n  border: none;\n  background: #cbc848;\n\n}\n\n.mathButtons button:hover{\n opacity: 0.5;\n}\n\n.mathButtons .col-xs-6 {\nmargin: 5px;\n  padding: 0;\n}\n\n#clear{\n  height: 50px; \n width: 60px;\n  color: black;\n  margin: 10px;\n  border-radius: 10px;\n  box-shadow: 1px 4px 5px #000;\n  background: #FF004D;\n  border:none;\n  \n}\n\n#resultButton {\n width: 110px;\n background: #5ce29f;\n  font-size: 2em;\n  height: 50px !important;\n \n}\n\n.result {\n  padding: 0;\n  padding-bottom: 20px;\n  text-align: center;\n}\n\n\n.col-xs-6 {\n  width: 40%;\n}\n\n@media (max-width: 480px) {\n  \n  #container {\n    width: 90%;\n  }\n  \n  button {\n    width: 40px !important;\n    height: 40px !important;\n    font-size: 1em !important;\n  }\n  \n  input {\n   font-size: 1em;\n  }\n  \n  \n  .numberField .row {\n    padding-left: 0 !important;\n  }\n\n  .mathButtons button {\n    width: 60px;\n  }\n  \n}\n", ""]);
+exports.push([module.i, "body {\n  font-family: Impact, Charcoal, sans-serif;\n  background: #690C0C;\n}\n\n\n#container {\n  border-radius: 10px;\n  box-shadow: 3px 3px 5px;\n  margin: 10% auto;\n  padding: 10px;\n  max-width: 500px;\n height: 450px;\n  color: black;\n  padding-bottom: 50px;\n  clear:both;\n  overflow: hidden;\n      background: #1C1C1C;\n   background: -webkit-linear-gradient(#000, #1C1C1C);\n    background: -o-linear-gradient(#000, #1C1C1C);\n    background: -moz-linear-gradient(#000, #1C1C1C); \n    background: linear-gradient(#000, #1C1C1C); \n}\n\n.app{\n  clear:both;\n  max-width: 100%;\n  max-height: 100%;\n  \n}\n\n.header {\n  width: 100%;\n  text-align: center;\n  clear:both;\n  color: #333;\n  font-size: 2em;\n\n}\n\n.header h1 {\n  padding: 20px;\n color: #2bd3ee;\n\n\n}\n\ninput {\n  height: 70px;\n  width: 300px;\n  background: #C9E2AE;\n   border: 4px solid #B2CA98;\n  color: #000;\n  border-radius: 10px;\n  font-size: 1.1em;\n  padding: 0;\n}\n\n.inputField {\n  margin: 0 auto;\n  padding: 10px;\n}\n\n.numButton{\n  text-align: center;\n  margin: 0;\n padding: 0 !Important;\n \n}\n\n.numButton row {\n  margin: 0;\n}\n.numButton button {\n  width: 70px;\n  height: 50px;\n  padding: 0;\n  margin: 6px;\n  font-size: 36px;\n  background: #96bddf;\n   border: none;\n}\n\nbutton {\n  border-radius: 10px;\n  box-shadow: 0px 5px 1px #000;\n}\n\nbutton:hover {\n  opacity: 0.7;\n}\n\nbutton:focus {\n  outline:0;\n}\n\nbutton:active {\n  transform: translateY(4px);\n}\n\n.number {\n  color: black; \n}\n\n.numberField {\n  margin: 0 auto;\n  float:left;\n  width: 60%;\n}\n\n .numberField .row {\n  padding-left: 30px;\n  padding-top: 30px;\n  margin: 0;\n}\n\n.mathButtons {\n  padding: 0;\n  margin: 0 auto;\n  width: 100%;\n  float: right;\n  width: 40%;\n}\n\n.mathButtons .row {\n  margin: 0;\n  padding-top: 33px;\n  padding-left: 15px;\n  padding-bottom: 30px;\n}\n\n.mathButtons button {\n\n  font-size: 30px;\n  margin: 0 auto;\n  width:60px;\n height: 50px;\n  padding: 0;\n \n  border: none;\n  background: #cbc848;\n\n}\n\n.mathButtons button:hover{\n opacity: 0.5;\n}\n\n.mathButtons .col-xs-6 {\nmargin: 5px;\n  padding: 0;\n}\n\n#clear{\n  height: 50px; \n width: 60px;\n  color: black;\n  margin: 10px;\n  border-radius: 10px;\n  box-shadow: 1px 4px 5px #000;\n  background: #FF004D;\n  border:none;\n  \n}\n\n#resultButton {\n width: 110px;\n background: #5ce29f;\n  font-size: 2em;\n  height: 50px !important;\n \n}\n\n.result {\n  padding: 0;\n  padding-bottom: 20px;\n  text-align: center;\n}\n\n\n.col-xs-6 {\n  width: 40%;\n}\n\n@media (max-width: 480px) {\n  \n  #container {\n    width: 90%;\n  }\n  \n  button {\n    width: 40px !important;\n    height: 40px !important;\n    font-size: 1em !important;\n  }\n  \n  input {\n   font-size: 1em;\n  }\n  \n  \n  .numberField .row {\n    padding-left: 0 !important;\n  }\n\n  .mathButtons button {\n    width: 60px;\n  }\n  \n}\n", ""]);
 
 // exports
 
