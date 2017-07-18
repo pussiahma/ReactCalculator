@@ -11,10 +11,11 @@ export default function NumButtonReducer(state = initialState, action) {
   switch (action.type) {
     case NumButtonActionTypes.GET_NUMBER:
 
-      if (state.number === " -0" || state.number === ".0" || state.number === "0") {
+      if (state.number === '-0' || state.number === '.0' || state.number === '0' || state.number.endsWith('-0') || state.number.endsWith('/ 0') 
+        || state.number.endsWith('+ 0') || state.number.endsWith('* 0')) {
          return {
           state,
-          number: action.text === "." ? state.number + action.text : state.number,
+          number: state.number,
           numberArr: state.numberArr,
           mathButtonArr: state.mathButtonArr,
          }
@@ -22,15 +23,7 @@ export default function NumButtonReducer(state = initialState, action) {
 
       return {
         state,
-        number: state.number == "" ? action.text : state.number + action.text,
-        numberArr: state.numberArr,
-        mathButtonArr: state.mathButtonArr,
-      }
-
-    case NumButtonActionTypes.CLEAR:
-      return {
-        state,
-        number: "",
+        number: state.number == '' ? action.text : state.number + action.text,
         numberArr: state.numberArr,
         mathButtonArr: state.mathButtonArr,
       }
@@ -40,9 +33,27 @@ export default function NumButtonReducer(state = initialState, action) {
       const last = state.number.substr(state.number.length - 1);
       const end = state.number.substr(state.number.length - 3);
 
-      if (action.text === "." || action.text === " -") {
-        if (last === "." || last === "-") {
-      
+      function contains(string, arr){
+        let value = 0;
+        arr.forEach(function(char){
+        value = value + string.includes(char);
+        });
+
+        return (value === 1)
+
+      }
+
+        if (action.text === "." && contains(state.number, state.mathButtonArr) && state.number.includes(".")) {
+        return {
+          state,
+          number: state.number,
+          numberArr: state.numberArr,
+          mathButtonArr: state.mathButtonArr,
+        }
+      }
+
+      if (action.text === '.'|| action.text === ' -') {
+        if (last === '.' || last === '-') {
           return {
             state,
             number: state.number,
@@ -60,7 +71,6 @@ export default function NumButtonReducer(state = initialState, action) {
       }
 
       if (last === "." || last === "-" || end === " / " || end === " * " || end === " + ") {
-      
         return {
           state,
           number: state.number,
