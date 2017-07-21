@@ -7,7 +7,6 @@ const initialState =  {
 }
 
 export default function NumButtonReducer(state = initialState, action) {
-  console.log(state)
 
   switch (action.type) {
     case NumButtonActionTypes.GET_NUMBER:
@@ -29,8 +28,8 @@ export default function NumButtonReducer(state = initialState, action) {
       const last = state.number.substr(state.number.length - 1)
       const end = state.number.substr(state.number.length - 3)
 
-    if(action.text === '.') {
-      if(state.number.includes('.') && !end.includes(' ') || end.includes('.')) {
+    if (action.text === '.') {
+      if (state.number.includes('.') && !end.includes(' ') || end.includes('.')) {
             return {
             ...state
           }
